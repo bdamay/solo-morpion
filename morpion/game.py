@@ -280,15 +280,8 @@ class Solitaire:
 
 
     def getPossibleMoves(self):
-        """
-        TODO le stockage des possibles moves par hash ne doit pas être dans le game mais dans le solver
 
-        :return:
-        """
-        if self.possiblemoves.get(self.hash) != None:
-            return self.possiblemoves[self.hash]
-        else:
-            return self.__calculatePossibleMoves()
+        return self.__calculatePossibleMoves()
 
     def __calculatePossibleMoves(self):
         moves = []
@@ -299,7 +292,6 @@ class Solitaire:
             m = self.getValidMoveFromLine(l)
             if m:
                 moves.append(m)
-        self.possiblemoves[self.hash] = moves
         return moves
 
     def getHash(self):

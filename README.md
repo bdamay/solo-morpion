@@ -11,3 +11,6 @@ This program includes a base for a solver class that looks forward to best moves
 Actually this is not good but it might be improved in the future
 
 Documentation is not available for now
+
+Run program with:
+`python main.py [-s] [-f filename]  \n -s: launch solver without ui \n -f: specify filename`

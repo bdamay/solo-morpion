@@ -1,14 +1,12 @@
 __author__ = 'benoit'
 import os, sys, getopt
-
 import datetime as dt
 from morpion.game import *
 
 
 def main(argv):
 
-    usage = 'python solitaire.py [-s] \n -s to solve immediatly otherwise ui is launched'
-
+    usage = 'python main.py [-s] [-f filename]  \n -s: launch solver without ui \n -f: specify filename'
     print('main')
     debut = dt.datetime.now()
     print('Starting at: ' + str(debut))
@@ -20,6 +18,7 @@ def main(argv):
 
     mode = 'ui'
     maxMoves, depth = 1000, 2
+    filename = None
     for opt, arg in opts:
         if opt == '-h':
             print(usage)

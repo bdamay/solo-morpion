@@ -237,7 +237,7 @@ class SolitaireUI:
         self.solitaire.saveToFile()
 
     def loadGame(self, event):
-        new_solitaire = self.solitaire.loadFromFile('game.dmp')
+        new_solitaire = self.solitaire.loadFromFile('data/game.dmp')
         self.solitaire = new_solitaire
         self.show()
 
