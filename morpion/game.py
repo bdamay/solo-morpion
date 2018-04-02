@@ -151,7 +151,7 @@ class Solitaire:
 
     def saveToFile(self, filename=None):
         if filename is None:
-            filename = 'game'+str(len(self.moves))+'.dmp'
+            filename = 'data/game.dmp'
         file = open(filename,'wb')
         #provisoire clean le tableau de hash
         self.possiblemoves.clear()
@@ -300,46 +300,3 @@ class Solitaire:
         hash_object = hashlib.md5(s.encode())
         return hash_object.hexdigest()
 
-
-def main(argv):
-
-    usage = 'python solitaire.py [-s] \n -s to solve immediatly otherwise ui is launched'
-
-    print('main')
-    debut = dt.datetime.now()
-    print('Starting at: ' + str(debut))
-
-    try:
-        opts, args = getopt.getopt(argv,"s:d:")
-    except getopt.GetoptError:
-        print(usage)
-        sys.exit(2)
-
-    mode = 'ui'
-    maxMoves, depth = 1000, 2
-    for opt, arg in opts:
-        if opt == '-h':
-            print(usage)
-            sys.exit()
-        elif opt in ("-s", "--solve"):
-            mode = 'solver'
-            maxMoves = int(arg)
-        elif opt in ("-d", "--depth"):
-            mode = "depth"
-            depth = int(arg)
-
-
-    sol = Solitaire()
-    if mode == 'solver':
-        solver = Solver(sol, maxMoves,depth)
-        solver.searchBestMove()
-    elif mode== 'depth':
-        solver = Solver(sol, maxMoves,depth)
-        solver.searchDepth()
-    else:
-        ui = SolitaireUI(sol)
-        ui.show()
-
-if __name__ == '__main__':
-    args = sys.argv[1:]
-    main(args)

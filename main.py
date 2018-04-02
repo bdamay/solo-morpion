@@ -18,6 +18,7 @@ def main(argv):
 
     mode = 'ui'
     maxMoves, depth = 1000, 2
+
     filename = None
     for opt, arg in opts:
         if opt == '-h':

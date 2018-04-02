@@ -83,7 +83,8 @@ class Solver:
                 self.bestGame = copy.deepcopy(self.sol)
                 self.bestscore = linescore
                 print('durée: ' +str(dt.datetime.now() - self.starttime) + ' bestscore ' + str(self.bestscore)  + ' totalMoves '+str(self.totalMovesPlayed) + ' totalEvaluations '+str(self.totalMoveEvaluation))
-
+                if self.bestscore >= 150:   #max for me
+                    self.sol.saveToFile('data/game'+str(self.bestscore)+'-'+dt.datetime.now().strftime('%Y-%m-%d-%Hh%M'))+'.dmp'
         else:
             self.skipped += 1
         self.sol.undoLastMove()
