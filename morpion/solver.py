@@ -72,7 +72,8 @@ class Solver:
             moves = self.sol.getPossibleMoves()
             # sort move with scores evaluation
             scores = self.getScores(moves)
-            moves = [s[1] for s in sorted(zip(scores, moves), key=lambda pair: -pair[0])] #sort descending
+            moves = [s[1] for s in sorted(zip(scores, moves), key=lambda pair: -pair[0]) if s[0] > 0]
+            #sort descending and cutting bad scores (s[0] > 0)
             for m in moves:
                 self.sol.playMove(m)
                 self.totalMovesPlayed +=1
@@ -132,7 +133,7 @@ class Solver:
         #minimizing x and maximizing y - for moving upleft to down right ?
         #score += m.line.p1[1]-m.line.p1[0]
 
-        return score
+        return score + 100 #all big gaps will be negative and therefore ignored by first search
         """
         Evaluate move statically with basic concepts
         1. Compacity  ? (how many neighbours for the new pawn)
