@@ -1,0 +1,7 @@
+dist
+build
+*.dmp
+.idea
+main.spec
+__pycache__
+dumps
