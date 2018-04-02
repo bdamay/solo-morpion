@@ -63,7 +63,7 @@ class Solver:
         if self.totalMovesPlayed > self.maxMoves or self.stop:
             self.sol.undoLastMove()
             return
-        if self.totalMovesPlayed % 1000 == 0:
+        if self.totalMovesPlayed > 0 and self.totalMovesPlayed % 1000 == 0:
             print('durée: ' +str(dt.datetime.now() - self.starttime) + ' bestscore ' + str(self.bestscore) +' min:' +str(self.min)+ ' top:' +str(self.top)+ ' skipped:'+str(self.skipped) + ' totalMoves '+str(self.totalMovesPlayed) + ' totalEvaluations '+str(self.totalMoveEvaluation))
             self.top, self.min, self.skipped = 0, self.bestscore, 0
 
@@ -126,7 +126,7 @@ class Solver:
             gap = m.line.getGapWith(l)
             if gap == 0:
                 score +=100
-            elif abs(gap) <=4:
+            elif gap > 0 and gap < 4:   # a gap of 4 may signify a full line is in between
                 score-=10**gap
 
         #minimizing x and maximizing y - for moving upleft to down right ?

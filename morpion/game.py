@@ -24,6 +24,7 @@ class Line:
     """
     Line length is always 4 (ie 4 intervals between 5 points)
     Line instance is carrying a list of lines that it overlaps that is initialized with solitaire game
+    p1, p2  are tuples (x,y)
      """
     def __init__(self, p1, p2):
         self.p1 = p1
@@ -104,9 +105,9 @@ class Line:
         if self.dir != otherline.dir or self.origin != otherline.origin:
             return -1
         else:
-            divisor = sum(self.dir)
-            if divisor == 0: divisor = 2 #(1,-1 direction)
-            return abs((sum(self.p1) - sum(otherline.p1))//divisor)-4
+            divisor = sum([abs(i) for i in self.dir])
+            gap = abs((self.p1[0]-otherline.p1[0])*self.dir[0] + (self.p1[1]-otherline.p1[1])*self.dir[1])//divisor-4
+            return gap
 
 class Solitaire:
 
