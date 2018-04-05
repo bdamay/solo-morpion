@@ -21,6 +21,7 @@ class Solver:
 
 
     def solve(self):
+        self.sol.timeSpentHashing = dt.timedelta()
         self.searchBestMove()
         print('Finished with best = '+str(self.bestscore))
 
@@ -34,7 +35,7 @@ class Solver:
             if linescore > self.bestscore:
                 self.bestGame = copy.deepcopy(self.sol)
                 self.bestscore = linescore
-                print('durée: ' +str(dt.datetime.now() - self.starttime) + ' bestscore ' + str(self.bestscore)  + ' totalMoves '+str(self.totalMovesPlayed) + ' totalEvaluations '+str(self.totalBoardEvaluation))
+                print('durée: ' +str(dt.datetime.now() - self.starttime) + ' bestscore ' + str(self.bestscore)  + ' totalMoves '+str(self.totalMovesPlayed) + ' totalEvaluations '+str(self.totalBoardEvaluation)) +' thash:' +str(self.sol.timeSpentHashing)
             self.sol.undoLastMove()
             return self.bestGame
         if self.sol.hash not in self.hasBeenSearched:
@@ -64,7 +65,7 @@ class Solver:
             self.sol.undoLastMove()
             return
         if self.totalMovesPlayed > 0 and self.totalMovesPlayed % 1000 == 0:
-            print('durée: ' +str(dt.datetime.now() - self.starttime) + ' bestscore ' + str(self.bestscore) +' min:' +str(self.min)+ ' top:' +str(self.top)+ ' skipped:'+str(self.skipped) + ' totalMoves '+str(self.totalMovesPlayed) + ' totalEvaluations '+str(self.totalMoveEvaluation))
+            print('durée: ' +str(dt.datetime.now() - self.starttime) + ' bestscore ' + str(self.bestscore) +' min:' +str(self.min)+ ' top:' +str(self.top)+ ' skipped:'+str(self.skipped) + ' moves  '+str(self.totalMovesPlayed) + ' evals '+str(self.totalMoveEvaluation)+' thash:' +str(self.sol.timeSpentHashing))
             self.top, self.min, self.skipped = 0, self.bestscore, 0
 
         if self.sol.hash not in self.hasBeenSearched:
@@ -83,7 +84,7 @@ class Solver:
             if linescore > self.bestscore:
                 self.bestGame = copy.deepcopy(self.sol)
                 self.bestscore = linescore
-                print('durée: ' +str(dt.datetime.now() - self.starttime) + ' bestscore ' + str(self.bestscore)  + ' totalMoves '+str(self.totalMovesPlayed) + ' totalEvaluations '+str(self.totalMoveEvaluation))
+                print('durée: ' +str(dt.datetime.now() - self.starttime) + ' bestscore ' + str(self.bestscore)  + ' totalMoves '+str(self.totalMovesPlayed) + ' totalEvaluations '+str(self.totalMoveEvaluation)+' thash:' +str(self.sol.timeSpentHashing))
                 if self.bestscore >= 150:   #max for me
                     self.sol.saveToFile('data/game'+str(self.bestscore)+'-'+dt.datetime.now().strftime('%Y-%m-%d-%Hh%M')+'.dmp')
         else:

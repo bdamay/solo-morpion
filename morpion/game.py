@@ -138,7 +138,8 @@ class Solitaire:
             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
             [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]])
 
-        self.hash = self.getHash()
+
+        self.timeSpentHashing = dt.timedelta()
         self.possiblemoves = {} # hash of game with possible moves association
         self.width = len(self.board)
         self.height = len(self.board[0])
@@ -149,6 +150,7 @@ class Solitaire:
         self.starttime = (dt.datetime.now())
         self.allLines = self.getAllPossibleLines() #stocke toutes les définitiones de lignes possibles
         self.getPossibleMoves()
+        self.hash = self.getHash()
 
     def saveToFile(self, filename=None):
         if filename is None:
@@ -296,8 +298,11 @@ class Solitaire:
         return moves
 
     def getHash(self):
-        s = ''.join([str(item) for sublist in self.board for item in sublist]) #the board
-        s += ':'+str(sorted( [str(m.line) for m in self.moves])) #sorted lines
+        start = dt.datetime.now()
+        #s = ''.join([str(item) for sublist in self.board for item in sublist]) #the board
+        s = ':'+str(sorted( [str(m.line) for m in self.moves])) #sorted lines
         hash_object = hashlib.md5(s.encode())
+
+        self.timeSpentHashing += dt.datetime.now() -start
         return hash_object.hexdigest()
 
