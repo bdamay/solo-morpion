@@ -3,7 +3,7 @@ __author__ = 'benoit'
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 import multiprocessing, time, threading
-from .solver import *
+from .game import *
 
 
 class SolitaireUI:

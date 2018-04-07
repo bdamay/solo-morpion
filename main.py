@@ -2,7 +2,7 @@ __author__ = 'benoit'
 import os, sys, getopt
 import datetime as dt
 from morpion.game import *
-
+from morpion.ui import *
 
 def main(argv):
 
@@ -33,9 +33,11 @@ def main(argv):
             mode = "depth"
             depth = int(arg)
 
+
+    sol = Solitaire()
     if filename:
         file = open(filename,'rb')
-        sol = pickle.load(file)
+        sol.loadFromFile(filename)
         file.close()
     else:
         sol = Solitaire()
@@ -52,8 +54,6 @@ def main(argv):
     else:
         ui = SolitaireUI(sol)
         ui.show()
-
-
 
 if __name__ == '__main__':
     args = sys.argv[1:]
