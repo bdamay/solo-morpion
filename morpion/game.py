@@ -159,12 +159,13 @@ class Solitaire:
         dump = pickle.dump(self, file)
         file.close()
 
-    def loadFromFile(self, filename):
+
+    @staticmethod
+    def loadFromFile(filename):
         file = open(filename,'rb')
         game = pickle.load(file)
         file.close()
         return game
-
 
 
     def getGrid(self):

@@ -37,20 +37,17 @@ def main(argv):
     sol = Solitaire()
     if filename:
         file = open(filename,'rb')
-        sol.loadFromFile(filename)
+        sol = Solitaire.loadFromFile(filename)
         file.close()
     else:
         sol = Solitaire()
 
 
     if mode == 'solver':
-        solver = Solver(sol, maxMoves, depth)
+        solver = Solver(sol)
         solver.solve()
         sol.saveToFile()
 
-    elif mode== 'depth':
-        solver = Solver(sol, maxMoves,depth)
-        solver.searchDepth()
     else:
         ui = SolitaireUI(sol)
         ui.show()

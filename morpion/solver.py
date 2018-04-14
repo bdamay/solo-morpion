@@ -3,11 +3,11 @@ import datetime as dt
 import random, copy
 
 class Solver:
-    def __init__(self, solitaire, maxMoves, depth):
+    def __init__(self, solitaire, hasBeenSearched=[]):
         self.sol = solitaire
         self.bestGame = []
         self.bestscore = 0
-        self.hasBeenSearched = []
+        self.hasBeenSearched = hasBeenSearched     # to avoid searching again the same lines we pass a list f positions that has already been examined
         self.totalMovesPlayed = 0
         self.totalBoardEvaluation = 0
         self.totalMoveEvaluation = 0
@@ -15,12 +15,12 @@ class Solver:
         self.top = 0
         self.skipped = 0
         self.starttime = (dt.datetime.now())
-        self.maxMoves = maxMoves
+        self.maxMoves = 50000000
         self.stop = False
-        self.depth = depth
 
 
     def solve(self):
+        print('starting solver')
         self.searchBestMove()
         print('Finished with best = '+str(self.bestscore))
 
@@ -29,6 +29,8 @@ class Solver:
         self.searchInDepth(self.depth)
 
     def searchInDepth(self, depth):
+        """ unused
+        """
         if depth == 0:
             linescore = self.evaluateBoard()
             if linescore > self.bestscore:
@@ -64,11 +66,10 @@ class Solver:
             self.sol.undoLastMove()
             return
         if self.totalMovesPlayed > 0 and self.totalMovesPlayed % 1000 == 0:
-            print('durée: ' +str(dt.datetime.now() - self.starttime) + ' bestscore ' + str(self.bestscore) +' min:' +str(self.min)+ ' top:' +str(self.top)+ ' skipped:'+str(self.skipped) + ' totalMoves '+str(self.totalMovesPlayed) + ' totalEvaluations '+str(self.totalMoveEvaluation))
+            print('T: ' +str(dt.datetime.now() - self.starttime) + ' best: ' + str(self.bestscore) +' min:' +str(self.min)+ ' top:' +str(self.top)+ ' sk:'+str(self.skipped) + ' moves: '+str(self.totalMovesPlayed) + ' evals '+str(self.totalMoveEvaluation)  + ' hashsize: '+str(len(self.hasBeenSearched)))
             self.top, self.min, self.skipped = 0, self.bestscore, 0
 
         if self.sol.hash not in self.hasBeenSearched:
-            self.hasBeenSearched.append(self.sol.hash)
             moves = self.sol.getPossibleMoves()
             # sort move with scores evaluation
             scores = self.getScores(moves)
@@ -83,11 +84,13 @@ class Solver:
             if linescore > self.bestscore:
                 self.bestGame = copy.deepcopy(self.sol)
                 self.bestscore = linescore
-                print('durée: ' +str(dt.datetime.now() - self.starttime) + ' bestscore ' + str(self.bestscore)  + ' totalMoves '+str(self.totalMovesPlayed) + ' totalEvaluations '+str(self.totalMoveEvaluation))
+                print('T: ' +str(dt.datetime.now() - self.starttime) + ' best: ' + str(self.bestscore)  + ' moves: '+str(self.totalMovesPlayed) + ' evals: '+str(self.totalMoveEvaluation) + ' hashsize: '+str(len(self.hasBeenSearched)))
                 if self.bestscore >= 150:   #max for me
                     self.sol.saveToFile('data/game'+str(self.bestscore)+'-'+dt.datetime.now().strftime('%Y-%m-%d-%Hh%M')+'.dmp')
         else:
             self.skipped += 1
+        if self.sol.hash not in self.hasBeenSearched:
+            self.hasBeenSearched.append(self.sol.hash)  #the branch has been fully examined => don't go there again
         self.sol.undoLastMove()
         mvs = len(self.sol.moves)
         self.min = mvs if mvs < self.min else self.min

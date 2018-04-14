@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 import multiprocessing, time, threading
 from .game import *
+from .solver import *
 
 
 class SolitaireUI:
@@ -99,22 +100,17 @@ class SolitaireUI:
 
         plt.show()
 
-    def searchDepth(self, event):
-
-        self.solitaire.starttime = dt.datetime.now()
-        self.startPoint = len(self.solitaire.moves)
-        self.solver = Solver(self.solitaire,2000,3)
-        self.solver.searchInDepth(3)
-        self.solitaire = self.solver.bestGame
-        self.ax.clear()
-        self.show()
 
 
     def getBestGame(self, event):
 
         self.solitaire.starttime = dt.datetime.now()
         self.startPoint = len(self.solitaire.moves)
-        self.solver = Solver(self.solitaire,500000000,3)
+        if self.solver == None:
+            self.solver = Solver(self.solitaire)
+        else:
+            self.solver.hasBeenSearched.remove(self.solitaire.getHash())
+            self.solver = Solver(self.solitaire, self.solver.hasBeenSearched)
 
         thread = threading.Thread(target=self.solver.solve)
         thread.start()
